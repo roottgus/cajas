@@ -1,4 +1,6 @@
-<div x-data @keydown.escape.window="$wire.closeModal()">
+<!-- resources/views/livewire/box-modal.blade.php -->
+
+<div x-data="{}" @keydown.escape.window="$wire.closeModal()">
   <div
     x-show="$wire.open"
     x-cloak
@@ -6,13 +8,13 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity"
   >
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative animate-fade-in">
-      {{-- Botón de cerrar --}}
+      {{-- Cerrar --}}
       <button
         @click="$wire.closeModal()"
         class="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
       >✕</button>
 
-      {{-- Mensaje de éxito con ícono --}}
+      {{-- Éxito --}}
       @if($successMessage)
         <div
           x-data
@@ -28,11 +30,20 @@
         </div>
       @endif
 
+      {{-- Imagen --}}
+      <div class="flex justify-center mb-4">
+        <img 
+          src="{{ asset('images/' . ($type === 'issue' ? 'entrega.png' : 'recibido.png')) }}"
+          alt="{{ $type === 'issue' ? 'Entrega de cajas' : 'Recibido de cajas' }}"
+          class="w-24 h-24"
+        />
+      </div>
+
       {{-- Título --}}
-      <h2 class="text-xl font-semibold mb-4">
+      <h2 class="text-xl font-semibold mb-4 text-center">
         {{ $type === 'issue'
-            ? 'Registrar Salida de Cajas'
-            : 'Registrar Ingreso de Cajas' }}
+            ? 'Registrar Entrega de Cajas al Depósito'
+            : 'Registrar Recibido de Cajas del Depósito' }}
       </h2>
 
       {{-- Formulario --}}
