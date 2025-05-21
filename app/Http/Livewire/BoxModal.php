@@ -66,8 +66,8 @@ class BoxModal extends Component
         ]);
 
         $this->successMessage = $this->type === 'issue'
-            ? 'Salida de caja registrada exitosamente.'
-            : 'Ingreso de caja registrado exitosamente.';
+            ? 'Entrega de caja registrado exitosamente.'
+            : 'Recibido de caja registrada exitosamente.';
 
         $this->quantity = null;
         $this->notes    = null;

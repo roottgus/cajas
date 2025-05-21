@@ -78,59 +78,67 @@
     </aside>
 
     {{-- Área Principal --}}
-    <main class="flex-1 bg-gray-50 rounded-lg shadow p-8">
-      {{-- Saludo --}}
-      <div 
-        x-show="selectedVendorId"
-        x-cloak
-        class="text-center mb-6 leading-relaxed"
-      >
-        <p class="text-xl font-semibold text-gray-800">
-          Buen día, <strong x-text="selectedVendorName"></strong>.
-        </p>
-        <p class="text-lg text-gray-700">Seleccione acción a realizar.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <!-- Botón Entrega -->
-        <button
-          @click="
-            window.dispatchEvent(new CustomEvent('open-report-modal', {
-              detail: ['issue', selectedVendorId]
-            }))
-          "
-          :disabled="!selectedVendorId"
-          :class="selectedVendorId
-            ? 'hover:shadow-xl bg-white'
-            : 'opacity-50 cursor-not-allowed bg-gray-200'"
-          class="rounded-lg shadow p-8 flex flex-col items-center transition"
-        >
-          <img src="{{ asset('images/entrega.png') }}" class="w-24 h-24 mb-4" alt="Entrega" />
-          <span class="text-lg font-semibold">Entrega de Cajas</span>
-        </button>
-
-        <!-- Botón Recibido -->
-        <button
-          @click="
-            window.dispatchEvent(new CustomEvent('open-report-modal', {
-              detail: ['return', selectedVendorId]
-            }))
-          "
-          :disabled="!selectedVendorId"
-          :class="selectedVendorId
-            ? 'hover:shadow-xl bg-white'
-            : 'opacity-50 cursor-not-allowed bg-gray-200'"
-          class="rounded-lg shadow p-8 flex flex-col items-center transition"
-        >
-          <img src="{{ asset('images/recibido.png') }}" class="w-24 h-24 mb-4" alt="Recibido" />
-          <span class="text-lg font-semibold">Recibido de Cajas</span>
-        </button>
-      </div>
-    </main>
+<main class="flex-1 bg-gray-50 rounded-lg shadow p-8">
+  {{-- Saludo --}}
+  <div 
+    x-show="selectedVendorId"
+    x-cloak
+    class="text-center mb-6 leading-relaxed"
+  >
+    <p class="text-xl font-semibold text-gray-800">
+      Buen día, <strong x-text="selectedVendorName"></strong>.
+    </p>
+    <p class="text-lg text-gray-700">Seleccione la acción a realizar:</p>
   </div>
 
-  {{-- Livewire Modal --}}
-  <livewire:box-modal />
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <!-- Botón Registrar entrega -->
+    <button
+      @click="
+        window.dispatchEvent(new CustomEvent('open-report-modal', {
+          detail: ['issue', selectedVendorId]
+        }))
+      "
+      :disabled="!selectedVendorId"
+      :class="selectedVendorId
+        ? 'hover:shadow-xl bg-white'
+        : 'opacity-50 cursor-not-allowed bg-gray-200'"
+      class="rounded-lg shadow p-8 flex flex-col items-center transition"
+    >
+      <img src="{{ asset('images/entrega1.png') }}"
+           class="w-24 h-24 mb-4"
+           alt="Registrar entrega" />
+      <span class="text-lg font-semibold">
+        Registrar Entrega De Cajas Al Depósito
+      </span>
+    </button>
+
+    <!-- Botón Registrar recepción -->
+    <button
+      @click="
+        window.dispatchEvent(new CustomEvent('open-report-modal', {
+          detail: ['return', selectedVendorId]
+        }))
+      "
+      :disabled="!selectedVendorId"
+      :class="selectedVendorId
+        ? 'hover:shadow-xl bg-white'
+        : 'opacity-50 cursor-not-allowed bg-gray-200'"
+      class="rounded-lg shadow p-8 flex flex-col items-center transition"
+    >
+      <img src="{{ asset('images/recibido1.png') }}"
+           class="w-24 h-24 mb-4"
+           alt="Registrar recepción" />
+      <span class="text-lg font-semibold">
+        Registrar Recibido De Cajas Del Depósito
+      </span>
+    </button>
+  </div>
+</main>
+
+{{-- Livewire Modal --}}
+<livewire:box-modal />
+
 
   {{-- Modal sólo Admin --}}
   <div

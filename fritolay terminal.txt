@@ -1,0 +1,36 @@
+ingreso hostinger:
+diegofx0@gmail.com
+Margarita2025@
+
+ingreso SSH fritolay: 
+
+ssh -p 65002 u642073214@88.223.84.75
+clave: AndresBZ.27
+
+carpeta edicion: cd ~/domains/distrimargarita.com/laravel
+__________________________________________________________
+
+
+servidor
+cd C:\Users\Main\fritolay-nuevo
+php artisan serve
+
+mysql:
+mysql -u root -p
+USE fritolay_db;
+
+
+php artisan queue:restart
+php artisan queue:work
+
+
+php artisan view:clear
+php artisan cache:clear
+php artisan config:clear
+
+______________________________________________
+cd box-app
+mysql:
+mysql -u root -p
+clave: AndresBZ.27
+USE box_app;

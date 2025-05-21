@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BoxController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,15 +25,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/box/dashboard', [BoxController::class, 'dashboard'])
          ->name('box.dashboard');
 
-    // Gestión de vendedores
+    // Listar
     Route::get('/box/vendors', [BoxController::class, 'vendorsIndex'])
          ->name('box.vendors.index');
+
+    // Crear
     Route::post('/box/vendors', [BoxController::class, 'vendorsStore'])
          ->name('box.vendors.store');
-    // Eliminar vendedor
+
+    // Editar
+    Route::get('/box/vendors/{vendor}/edit', [BoxController::class, 'vendorsEdit'])
+         ->name('box.vendors.edit');
+    Route::put('/box/vendors/{vendor}', [BoxController::class, 'vendorsUpdate'])
+         ->name('box.vendors.update');
+
+    // Eliminar
     Route::delete('/box/vendors/{vendor}', [BoxController::class, 'vendorsDestroy'])
          ->name('box.vendors.destroy');
-
+        
     // Reporte manual de cajas por el admin (salida/ingreso)
     Route::post('/box/issue',  [BoxController::class, 'issue'])
          ->name('box.issue');
@@ -44,9 +54,15 @@ Route::middleware('auth')->group(function () {
          ->name('box.transaction.edit');
     Route::patch('/box/transaction/{transaction}', [BoxController::class, 'updateTransaction'])
          ->name('box.transaction.update');
+
     // Eliminar transacción (opcional)
     Route::delete('/box/transaction/{transaction}', [BoxController::class, 'destroyTransaction'])
          ->name('box.transaction.destroy');
+
+    // Exportar transacciones filtradas en Excel o PDF
+    Route::get('/box/transactions/export/{format}', [TransactionController::class, 'export'])
+         ->name('box.transactions.export');
+
 });
 
 // API para estadísticas dinámicas del admin (sin recarga completa)
@@ -92,4 +108,3 @@ Route::get('/api/admin/stats', function (Request $request) {
         'transactions' => $transactions,
     ]);
 })->middleware('auth');
-

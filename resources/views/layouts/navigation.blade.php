@@ -1,4 +1,5 @@
-<nav class="bg-white shadow-md sticky top-0 z-50">
+{{-- resources/views/layouts/navigation.blade.php --}}
+<nav class="hidden md:block bg-white shadow-md sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
       {{-- Logo + Enlaces --}}

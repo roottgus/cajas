@@ -109,40 +109,31 @@ class BoxController extends Controller
                          ->with('success', 'Vendedor creado correctamente.');
     }
 
-    /**
+        /**
+     * Elimina un vendedor y todas sus transacciones (cascada manual)
+     */
+        /**
      * Elimina un vendedor y todas sus transacciones
      */
-    public function vendorsDestroy(User $vendor)
-    {
-        BoxTransaction::where('vendor_id', $vendor->id)->delete();
-        $vendor->delete();
-
-        return back()->with('success', 'Vendedor eliminado correctamente.');
-    }
-
-    /**
-     * Registra salida de cajas (admin)
+        /**
+     * Elimina un vendedor y todas sus transacciones (cascada manual)
      */
-    public function issue(Request $request)
-    {
-        $request->validate([
-            'vendor_id' => 'required|exists:users,id',
-            'quantity'  => 'required|integer|min:1',
-            'notes'     => 'nullable|string',
-        ]);
+    public function vendorsDestroy(User $vendor)
+{
+    // Elimina todas las transacciones asociadas (override SoftDeletes)
+    \DB::table('box_transactions')->where('vendor_id', $vendor->id)->delete();
 
-        BoxTransaction::create([
-            'vendor_id' => $request->vendor_id,
-            'admin_id'  => auth()->id(),
-            'type'      => 'issue',
-            'quantity'  => $request->quantity,
-            'notes'     => $request->notes,
-        ]);
+    // Borra el vendedor
+    $vendor->delete();
 
-        return back()->with('success', 'Salida de cajas registrada.');
-    }
+    // Responde con JSON
+    return response()->json([
+        'message' => 'Vendedor y transacciones eliminados exitosamente.'
+    ], 200);
+}
 
-    /**
+
+/**
      * Registra ingreso de cajas (admin)
      */
     public function return(Request $request)
@@ -201,5 +192,36 @@ class BoxController extends Controller
 
         return redirect()->route('box.dashboard')
                          ->with('success', 'Transacción eliminada correctamente.');
+    }
+
+    /**
+     * Muestra el formulario para editar un vendedor.
+     */
+    public function vendorsEdit(User $vendor)
+    {
+        return view('box.vendors.edit', compact('vendor'));    }
+
+    /**
+     * Procesa la actualización de un vendedor.
+     */
+    public function vendorsUpdate(Request $request, User $vendor)
+    {
+        $data = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email,' . $vendor->id,
+            'username' => 'required|string|max:255|unique:users,username,' . $vendor->id,
+            'password' => 'nullable|string|confirmed|min:8',
+        ]);
+
+        $vendor->name     = $data['name'];
+        $vendor->email    = $data['email'];
+        $vendor->username = $data['username'];
+        if (!empty($data['password'])) {
+            $vendor->password = bcrypt($data['password']);
+        }
+        $vendor->save();
+
+        return redirect()->route('box.vendors.index')
+                         ->with('success', 'Vendedor actualizado correctamente.');
     }
 }
